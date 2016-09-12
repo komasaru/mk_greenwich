@@ -13,7 +13,7 @@ module MkGreenwich
       @jd_ut1 = MkTime.new(@ut1.strftime("%Y%m%d%H%M%S")).jd  # ユリウス日(for UT1)
       @t = @jd_ut1 - Const::J2000
       bpn = EphBpn.new(@tdb.strftime("%Y%m%d%H%M%S"))
-      @r_mtx = prod_mtx(bpn.r_bias_prec, bpn.r_nut)
+      @r_mtx = bpn.r_bias_prec_nut
       cc = CipCio.new(@jc)
       x, y = cc.bpn2xy(@r_mtx)
       @s = cc.calc_s_06(x, y)
@@ -167,28 +167,6 @@ module MkGreenwich
       return (jd - Const::J2000) / Const::JC
     rescue => e
       raise
-    end
-
-    #-------------------------------------------------------------------------
-    # 行列の積 (3x3)
-    #
-    # @param:  r_1  (3x3-matrix)
-    # @param:  r_2  (3x3-matrix)
-    # @return: r    (3x3-matrix)
-    #-------------------------------------------------------------------------
-    def prod_mtx(r_1, r_2)
-      r = Array.new(3).map { |a| Array.new(3, 0.0) }
-
-      begin
-        0.upto(2) do |i|
-          0.upto(2) do |j|
-            r[i][j] = (0..2).inject(0.0) { |s, k| s + r_1[i][k] * r_2[k][j] }
-          end
-        end
-        return r
-      rescue => e
-        raise
-      end
     end
 
     def deg2hms(deg)
