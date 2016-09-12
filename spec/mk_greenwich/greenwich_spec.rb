@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe MkGreenwich::Greenwich do
-  # 2016-07-23 00:00:00 +00:00 (TDB)
+  # 2016-09-06 00:00:00 +00:00 (TDB)
   let(:g) { MkGreenwich::Greenwich.new(Time.new(2016, 9, 6, 0, 0, 0, "+00:00")) }
 
   context ".new(2016-09-06 00:00:00 +0000)" do
@@ -43,14 +43,14 @@ describe MkGreenwich::Greenwich do
 
     context "@r_mtx" do
       it { expect(g.instance_variable_get(:@r_mtx)).to match([
-        [0.9999918271499867,    -0.0037080294810666083, -0.0016112574588758337 ],
-        [0.0037080946537372344,  0.9999931242916492,     3.7462851217048895e-05],
-        [0.0016111074669827113, -4.343724020765925e-05,  0.9999987012221245    ]
+        [0.9999918271499899,    -0.0037080949515300174, -0.0016111067795452011 ],
+        [0.0037081601182366707,  0.9999931240488853,     3.7463159224315756e-05],
+        [0.0016109567847021563, -4.343709494969428e-05,  0.9999987014648851    ]
       ]) }
     end
 
     context "@s" do
-      it { expect(g.instance_variable_get(:@s)).to be_within(1.0e-23).of(3.318483384770641e-08) }
+      it { expect(g.instance_variable_get(:@s)).to eq 3.3181444234346554e-08 }
     end
 
     context "@e" do
@@ -67,15 +67,15 @@ describe MkGreenwich::Greenwich do
     end
 
     context ".eo" do
-      it { expect(g.eo).to eq -0.003708039788085105 }
+      it { expect(g.eo).to eq -0.0037081052589986517 }
     end
 
     context ".gast" do
-      it { expect(g.gast).to eq 6.030390547222813 }
+      it { expect(g.gast).to eq 6.030390612693727 }
     end
 
     context ".gast_deg" do
-      it { expect(g.gast_deg).to eq 345.51592717145417 }
+      it { expect(g.gast_deg).to eq 345.51593092266114 }
     end
 
     context ".gast_hms" do
@@ -95,49 +95,20 @@ describe MkGreenwich::Greenwich do
     end
 
     context ".ee" do
-      it { expect(g.ee).to be_within(1.0e-21).of(-2.2006864235812884e-05) }
+      it { expect(g.ee).to eq -2.1941393322677527e-05 }
     end
 
     context ".ee_deg" do
-      it { expect(g.ee_deg).to eq -0.001260900441029472 }
+      it { expect(g.ee_deg).to eq -0.0012571492340259483 }
     end
 
     context ".ee_hms" do
-      it { expect(g.ee_hms).to eq "-0 h 00 m 00.303 s" }
+      it { expect(g.ee_hms).to eq "-0 h 00 m 00.302 s" }
     end
 
     context ".calc_jc" do
       subject { g.send(:calc_jc, 2457637.5) }
       it { expect(subject).to eq 0.16680355920602327 }
-    end
-
-    context ".prod_mtx" do
-      let(:r_1) { [
-        [0.9999917301601547,    -0.003730040371107358,  -0.0016206202918558651 ],
-        [0.0037300404586375537,  0.9999930433704853,    -2.9684918178563002e-06],
-        [0.0016206200903952324, -3.0765119877207425e-06, 0.9999986867896666    ]
-      ] }
-      let(:r_2) { [
-        [ 0.9999999997139412,     2.1945600446413657e-05, 9.513589485750673e-06 ],
-        [-2.1945984741774317e-05, 0.9999999989432629,     4.0396137979625824e-05],
-        [-9.512702958193633e-06, -4.03963467530688e-05,   0.9999999991388218    ]
-      ] }
-      subject { g.send(:prod_mtx, r_1, r_2) }
-      it { expect(subject).to match([
-        [
-          be_within(1.0e-16).of( 0.9999918271499867    ),
-          be_within(1.0e-19).of(-0.0037080294810666083 ),
-          be_within(1.0e-19).of(-0.0016112574588758337 )
-        ], [
-          be_within(1.0e-19).of( 0.0037080946537372344 ),
-          be_within(1.0e-16).of( 0.9999931242916492    ),
-          be_within(1.0e-21).of( 3.7462851217048895e-05)
-        ], [
-          be_within(1.0e-19).of( 0.0016111074669827113 ),
-          be_within(1.0e-20).of(-4.343724020765925e-05 ),
-          be_within(1.0e-16).of( 0.9999987012221245    )
-        ]
-      ]) }
     end
 
     context ".deg2hms(1)" do
