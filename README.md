@@ -1,8 +1,8 @@
 # MkGreenwich
 
-## Installation
-
 This is the gem library which calculates Greenwich time.
+
+## Installation
 
 ```ruby
 gem 'mk_greenwich'
